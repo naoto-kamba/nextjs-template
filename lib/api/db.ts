@@ -1,5 +1,5 @@
 import { Client } from 'pg'
-import { Utils } from './utils'
+import { Utils } from '../common/utils'
 
 const config = {
   host: 'localhost',

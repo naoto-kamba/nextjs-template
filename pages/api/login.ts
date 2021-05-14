@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Session } from 'next-iron-session'
-import { DB } from '../../foundation/db'
-import { withSession } from '../../foundation/session'
+import { DB } from '../../lib/api/db'
+import { withSession } from '../../lib/api/session'
 type LoginRequestBody = {
   userId: string
   password: string
