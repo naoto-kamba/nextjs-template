@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Session } from 'next-iron-session'
-import { withSession } from '../../lib/api/session'
+import { withSession } from '../../middlewares/session'
 
 const handler = async (
   req: NextApiRequest & { session: Session },

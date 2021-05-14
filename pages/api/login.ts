@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Session } from 'next-iron-session'
 import { DB } from '../../lib/api/db'
-import { withSession } from '../../lib/api/session'
+import { withSession } from '../../middlewares/session'
 type LoginRequestBody = {
   userId: string
   password: string
