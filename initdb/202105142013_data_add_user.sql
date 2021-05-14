@@ -6,6 +6,6 @@ INSERT INTO TBM_USER (
 ) VALUES (
     'admin',
     'admin@dummy.com',
-    'Padmin',
+    encode(digest('Padmin', 'sha256'),'hex'),
     '0'
 );

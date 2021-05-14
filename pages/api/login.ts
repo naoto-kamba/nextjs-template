@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Session } from 'next-iron-session'
 import { DB } from '../../foundation/db'
@@ -46,13 +47,33 @@ const handler = async (
       res.status(401).end()
     }
   } else if (req.method === 'POST') {
-    const { userId } = req.body as LoginRequestBody
-    req.session.set('userId', userId)
-    const responseBody = {
-      messages: ['ログインに成功しました。'],
+    const { userId, password } = req.body as LoginRequestBody
+    const hashedPassword = crypto
+      .createHash('sha256')
+      .update(password, 'utf8')
+      .digest('hex')
+    const sql = `
+      SELECT
+        password
+      FROM
+        tbm_user
+      WHERE
+        user_id = '${userId}'
+      `
+    const result = await DB.select<{ password: string }>(sql)
+    if (result.length === 0) {
+      res.status(401).end()
     }
-    await req.session.save()
-    res.status(200).json(responseBody)
+    const storedPassword = result[0].password
+    if (storedPassword === hashedPassword) {
+      req.session.set('userId', userId)
+      await req.session.save()
+      res.status(200).json({
+        messages: ['ログインに成功しました。'],
+      })
+    } else {
+      res.status(401).end()
+    }
   }
 }
 
