@@ -1,4 +1,6 @@
 import { Client } from 'pg'
+import { Utils } from './utils'
+
 const config = {
   host: 'localhost',
   port: 25432,
@@ -7,12 +9,12 @@ const config = {
   password: 'postgres',
 }
 
-const select = async () => {
+const select = async <T>(sql: string) => {
   const client = new Client(config)
   await client.connect()
-  const result = await client.query('select * from tbm_test')
+  const result = await client.query(sql)
   await client.end()
-  return result
+  return Utils.toCamelCaseObjectArray(result.rows) as T[]
 }
 
 export const DB = {
