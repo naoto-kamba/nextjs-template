@@ -43,8 +43,10 @@ const handler = async (
         userId: record.userId,
         email: record.email,
       })
+      return
     } else {
       res.status(401).end()
+      return
     }
   } else if (req.method === 'POST') {
     const { userId, password } = req.body as LoginRequestBody
@@ -63,6 +65,7 @@ const handler = async (
     const result = await DB.select<{ password: string }>(sql)
     if (result.length === 0) {
       res.status(401).end()
+      return
     }
     const storedPassword = result[0].password
     if (storedPassword === hashedPassword) {
